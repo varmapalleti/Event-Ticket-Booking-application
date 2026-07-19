@@ -59,10 +59,12 @@ public class EventServiceImpl implements EventService {
 
     @Override
     public List<EventResponseDto> getAllEvents() {
-        return eventRepo.findAll()
-                .stream()
-                .map(e -> EventMapper.eventToResponse(e))
-                .collect(Collectors.toList());
+
+       return eventRepo.findAll()
+               .stream()
+               .map(e -> EventMapper.eventToResponse(e))
+               .collect(Collectors.toList());
+
     }
 
     private Event findOrThrow(Long id){
