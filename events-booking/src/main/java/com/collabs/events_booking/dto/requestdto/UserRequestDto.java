@@ -1,4 +1,4 @@
-package com.collabs.events_booking.requestdto;
+package com.collabs.events_booking.dto.requestdto;
 import org.hibernate.validator.constraints.Length;
 
 import com.collabs.events_booking.enums.UserRole;
