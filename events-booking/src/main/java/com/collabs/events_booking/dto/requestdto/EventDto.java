@@ -1,12 +1,12 @@
-package com.collabs.events_booking.dto;
+package com.collabs.events_booking.dto.requestdto;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
-import lombok.NonNull;
 
 
-import java.util.Date;
+import java.time.LocalDateTime;
+
 
 @Data
 public class EventDto {
@@ -17,11 +17,10 @@ public class EventDto {
     private String description;
     @NotBlank(message = "venue must be required")
     private String venue;
-    @NotBlank(message = "startDate must be required")
-    private Date startTime;
-    @NotBlank(message = "endDate must be required")
-    private Date endTime;
+    @NotNull(message = "startDate must be required")
+    private LocalDateTime  startTime;
+    @NotNull(message = "endDate must be required")
+    private LocalDateTime endTime;
     private double ticketPrice;
     private int totalSeats;
-    private int availableSeats;
 }

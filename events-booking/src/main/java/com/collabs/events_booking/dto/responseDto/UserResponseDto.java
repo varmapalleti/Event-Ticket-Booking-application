@@ -1,4 +1,4 @@
-package com.collabs.events_booking.responseDto;
+package com.collabs.events_booking.dto.responseDto;
 
 import com.collabs.events_booking.enums.UserRole;
 
