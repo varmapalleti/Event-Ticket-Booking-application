@@ -5,13 +5,16 @@ import com.collabs.events_booking.enums.Status;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+
 import java.time.LocalDateTime;
-import java.util.Date;
+
 
 @Entity
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
@@ -19,7 +22,7 @@ public class Event {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
     private String title;
     private String description;
     private String venue;
@@ -28,9 +31,11 @@ public class Event {
     private double ticketPrice;
     private int totalSeats;
     private int availableSeats;
-    
-    private User user;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "organizer_id")
+    private User organizer;
+
     @Enumerated(EnumType.STRING)
     private Status status;
-
 }
