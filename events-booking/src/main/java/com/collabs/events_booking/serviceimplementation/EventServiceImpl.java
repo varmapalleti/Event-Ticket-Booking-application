@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -61,7 +62,7 @@ public class EventServiceImpl implements EventService {
        return eventRepo.findAll()
                .stream()
                .map(e -> EventMapper.eventToResponse(e))
-               .toList();
+               .collect(Collectors.toList());
     }
 
     private Event findOrThrow(Long id){
