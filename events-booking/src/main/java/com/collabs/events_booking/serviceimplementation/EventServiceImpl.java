@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -23,26 +24,26 @@ public class EventServiceImpl implements EventService {
     @Override
     public EventResponseDto create(EventDto eventDto) {
 
-        if(!eventDto.getStartTime().isAfter(eventDto.getEndTime())){
+        if(eventDto.getStartTime().isAfter(eventDto.getEndTime())){
             throw new IllegalArgumentException("End time must be after start time");
         }
-       Event event = EventMapper.eventDtoToEntity(eventDto);
+        Event event = EventMapper.eventDtoToEntity(eventDto);
         event.setAvailableSeats(eventDto.getTotalSeats());
-       event.setStatus(Status.ACTIVE);
+        event.setStatus(Status.ACTIVE);
         Event savedEvent = eventRepo.save(event);
         return EventMapper.eventToResponse(savedEvent);
     }
 
     @Override
     public EventResponseDto update(Long id, EventDto eventDto) {
-       Event event = findOrThrow(id);
-       event.setTitle(eventDto.getTitle());
-       event.setDescription(eventDto.getDescription());
-       event.setVenue(eventDto.getVenue());
-       event.setEndTime(eventDto.getEndTime());
-       event.setStartTime(eventDto.getStartTime());
-       event.setTicketPrice(eventDto.getTicketPrice());
-       event.setTotalSeats(eventDto.getTotalSeats());
+        Event event = findOrThrow(id);
+        event.setTitle(eventDto.getTitle());
+        event.setDescription(eventDto.getDescription());
+        event.setVenue(eventDto.getVenue());
+        event.setEndTime(eventDto.getEndTime());
+        event.setStartTime(eventDto.getStartTime());
+        event.setTicketPrice(eventDto.getTicketPrice());
+        event.setTotalSeats(eventDto.getTotalSeats());
         Event updatedEvent = eventRepo.save(event);
 
         return EventMapper.eventToResponse(updatedEvent);
@@ -58,10 +59,10 @@ public class EventServiceImpl implements EventService {
 
     @Override
     public List<EventResponseDto> getAllEvents() {
-       return eventRepo.findAll()
-               .stream()
-               .map(e -> EventMapper.eventToResponse(e))
-               .toList();
+        return eventRepo.findAll()
+                .stream()
+                .map(e -> EventMapper.eventToResponse(e))
+                .collect(Collectors.toList());
     }
 
     private Event findOrThrow(Long id){

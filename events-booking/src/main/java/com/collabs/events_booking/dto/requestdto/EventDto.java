@@ -1,5 +1,6 @@
 package com.collabs.events_booking.dto.requestdto;
 
+import com.collabs.events_booking.model.User;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
@@ -23,4 +24,5 @@ public class EventDto {
     private LocalDateTime endTime;
     private double ticketPrice;
     private int totalSeats;
+
 }
