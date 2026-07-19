@@ -1,3 +1,18 @@
 spring:
   application:
     name: events-booking
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/events_booking?createDatabaseIfNotExist=true
+    username: root
+    password: N@gesh9446
+  jpa:
+    properties:
+      hibernate:
+        format-sql=true
+    database-platform: org.hibernate.dialect.MySQLDialect
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+server:
+  port: 8081
