@@ -5,7 +5,7 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/events_booking?createDatabaseIfNotExist=true
     username: root
-    password: N@gesh9446
+    password: root
   jpa:
     properties:
       hibernate:
