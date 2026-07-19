@@ -1,15 +1,19 @@
 package com.collabs.events_booking.serviceimplementation;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
+import com.collabs.events_booking.dto.requestdto.AuthRequest;
 import com.collabs.events_booking.dto.requestdto.UserRequestDto;
 import com.collabs.events_booking.dto.responseDto.UserResponseDto;
 import com.collabs.events_booking.enums.UserRole;
+import com.collabs.events_booking.exceptions.ResourceNotFound;
 import com.collabs.events_booking.model.User;
 import com.collabs.events_booking.repository.UserRepository;
+import com.collabs.events_booking.security.JwtUtil;
 import com.collabs.events_booking.service.UserService;
 
 import lombok.RequiredArgsConstructor;
@@ -19,6 +23,7 @@ import lombok.RequiredArgsConstructor;
 public class UserServiceImplementation implements UserService {
 
 	private final UserRepository userRepo;
+	private final JwtUtil jwtUtil;
 
 	@Override
 	public UserResponseDto addUser(UserRequestDto udto) {
@@ -36,14 +41,14 @@ public class UserServiceImplementation implements UserService {
 
 	@Override
 	public UserResponseDto getUser(Long id) {
-		User ur = userRepo.findById(id).orElseThrow(() -> new RuntimeException("user not found"));
+		User ur = userRepo.findById(id).orElseThrow(() -> new ResourceNotFound("user not found"));
 
 		return mapToResponse(ur);
 	}
 
 	@Override
 	public UserResponseDto updateuser(Long id, UserRequestDto udto) {
-		User u1 = userRepo.findById(id).orElseThrow(() -> new RuntimeException("user not found"));
+		User u1 = userRepo.findById(id).orElseThrow(() -> new ResourceNotFound("user not found"));
 		if (udto.getName() != null)
 			u1.setName(udto.getName());
 		if (udto.getEmail() != null)
@@ -60,7 +65,7 @@ public class UserServiceImplementation implements UserService {
 
 	@Override
 	public String deleteUser(Long id) {
-		User ur = userRepo.findById(id).orElseThrow(() -> new RuntimeException("user not found"));
+		User ur = userRepo.findById(id).orElseThrow(() -> new ResourceNotFound("user not found"));
 		userRepo.delete(ur);
 		return "user deleted";
 	}
@@ -69,5 +74,20 @@ public class UserServiceImplementation implements UserService {
 	public List<UserResponseDto> getUserByRole(UserRole role) {
 		List<User> ur = userRepo.findByRole(role);
 		return ur.stream().map(this::mapToResponse).collect(Collectors.toList());
+	}
+
+	@Override
+	public String login(AuthRequest ar) {
+		System.out.println("Login method called SERVICE");
+
+		User u1 = userRepo.findByEmailAndPassword(ar.getEmail(), ar.getPassword())
+				.orElseThrow(()->new ResourceNotFound("user not found"));
+		
+		String token = jwtUtil.generateToken(
+	            u1.getEmail(),
+	            u1.getRole().name()
+	    );
+
+	    return "Logged in successfully\nToken: " + token;
 	}
 }

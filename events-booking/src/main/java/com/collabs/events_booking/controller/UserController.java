@@ -18,6 +18,7 @@ import com.collabs.events_booking.dto.responseDto.UserResponseDto;
 import com.collabs.events_booking.enums.UserRole;
 import com.collabs.events_booking.service.UserService;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -28,7 +29,7 @@ public class UserController {
 	private final UserService userService;
 	
 	@PostMapping("/add")
-	public ResponseEntity<UserResponseDto> inserUser(@RequestBody UserRequestDto udto){
+	public ResponseEntity<UserResponseDto> insertUser( @Valid @RequestBody UserRequestDto udto){
 		return ResponseEntity.status(201).body(userService.addUser(udto));
 	}
 	
@@ -49,10 +50,11 @@ public class UserController {
 	
 	@PatchMapping("/update/{id}")
 	public ResponseEntity<UserResponseDto> updateUserData(@PathVariable Long id, 
-														@RequestBody UserRequestDto udto){
+														@Valid @RequestBody UserRequestDto udto){
 		return ResponseEntity.ok(userService.updateuser(id, udto));
 	}
 }
+
 
 
 
